@@ -13,6 +13,11 @@ exports.getAllSubject = async () => {
     return subsects;
 }
 
+exports.getAllSubjectsObject = async () => {
+    let sql = 'SELECT * FROM subjects;';
+     return db.execute(sql);      
+}
+
 exports.getSubject = (subject) => {
     let sql = `SELECT * FROM subjects WHERE = '${subject}'`;
     return db.execute(sql);

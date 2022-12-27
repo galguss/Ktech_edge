@@ -15,9 +15,7 @@ let levelUser;
 exports.userLogin = async (email, password) => {
         let [user , _] = await userLogin.login(email);
         if(user.length === 0){
-            return {
-                message: "User does not exist in the system"
-            };
+            return  {message: "User does not exist in the system"};
         };
         userEmail = user[0].email;
         userId = user[0].user_id;
@@ -27,16 +25,16 @@ exports.userLogin = async (email, password) => {
               token = jwt.sign({
                 id: userId,
                 email: userEmail
-            }, process.env.JWT_KEY);
+            }, "KTechEdge They are the best");
 
-            return {
-                message: "Auth successful"
+            return { 
+                message: "Auth successful",
+                token: token
             };
         };
 
-        return {
-            message: "Email or Password is incorrect"
-        };
+        return {message: "Email or Password is incorrect"};
+        
 };
 
 exports.getUserEmail = () => {

@@ -11,7 +11,7 @@ const bcryptHash = util.promisify(bcrypt.hash);
 router.get('/', async (req, res) => {
     try {
         let [users, _] = await User.getAllUsers();
-        res.status(200).json({message: users});
+        res.status(200).send(users);
     } catch (error) {
         console.log(error);
     }
@@ -20,35 +20,46 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req,res) => {
     try {
-        const { email, password, github, full_name, level } = req.body;
+        console.log("Hey");
+        const { email, password, github, fullName, level } = req.body;
+
         const newPassword = await bcryptHash(password, 10);
-        await User.createUser(email, newPassword, github, full_name, level);
+        await User.createUser(email, newPassword, github, fullName, level);
         res.status(201).json({ message: "User Created"});
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(401).json({message: "User failed"});
     }
 });
 
 router.patch('/', async (req, res) => {
     try {
-        const { column, oddValue, newValue } = req.body;
-        await User.updateUser(column, oddValue, newValue,);
+        const { column, oldValue, newValue } = req.body;
+        if(column === "password"){
+            const newPassword = await bcryptHash(newValue, 10);
+            await User.updateUser(column, oldValue, newPassword);
+        }else{
+            await User.updateUser(column, oldValue, oldValue);
+        }
         res.status(201).json({ message: 'user updated'});
     } catch (error) {
-        console.log(error);
+        res.status(401).json({ message: 'updated failed'});
     }
 });
 
 router.delete('/', async ( req, res ) => {
     try {
-        const {full_name} = req.body;
-        await User.deleteUser(full_name);
+        const { userId } = req.body;
+        await User.deleteUser(userId);
 
         res.status(201).json({
             message: "user deleted"
         });
     } catch (error) {
         console.log(error);
+        res.status(401).json({
+            message: "deleted failed"
+        });
     }
 });
 

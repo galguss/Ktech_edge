@@ -25,13 +25,13 @@ exports.updateUser = async (column, oddValue ,newValue) => {
     return db.execute(sql);
 }
 
-exports.deleteUser = (full_name) => {
-    let sql = `DELETE FROM users WHERE full_name = '${full_name}';`;
+exports.deleteUser = (id) => {
+    let sql = `DELETE FROM users WHERE user_id = ${id};`;
     return db.execute(sql);
 }
 
 exports.login =(email) => {
-    let sql = `SELECT user_id, email, password FROM users WHERE email = '${email}';`;
+    let sql = `SELECT user_id, email, password, level FROM users WHERE email = '${email}';`;
     return db.execute(sql);
 }
 

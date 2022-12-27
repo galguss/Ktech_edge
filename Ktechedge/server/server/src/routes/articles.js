@@ -29,9 +29,7 @@ router.get('/', async (req, res) => {
             key.the_tester = user[key.the_tester];
        }
 
-       res.status(200).json({
-            message: articles
-        });
+       res.status(200).json(articles);
 
     } catch (error) {
         res.status(401).json({
@@ -40,13 +38,11 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', checkAdmin, upload.single('page') ,async (req, res) => {
+router.post('/', checkAdmin, upload.single('page'), async (req, res) => {
     try {
         const { filename: page } = req.file;
-       console.log(req.file);
-        const { subject_id, profession_id, season_and_Question_numner, level } = req.body;
-        
-       await article.createArticle(page, subject_id, profession_id, season_and_Question_numner, level);
+        const { subject_id, profession_id, season_and_Question_numner, level} = req.body;
+        await article.createArticle(page, subject_id, profession_id, season_and_Question_numner, level);
 
         res.status(200).json({
             message: "article created!"
@@ -55,7 +51,7 @@ router.post('/', checkAdmin, upload.single('page') ,async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(401).json({
-            message: `${error}`
+            message: 'created article is failed!'
         });
     }
 });
@@ -71,6 +67,9 @@ router.patch('/', checkAuth, async (req, res) => {
 
     } catch (error) {
         console.log(error);
+        res.status(401).json({
+            message: 'updated article is failed!'
+        });
     }
 });
 
@@ -84,6 +83,9 @@ router.delete('/', checkAdmin, async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        res.status(401).json({
+            message: 'deleted article is failed!'
+        });
     }
 })
 
