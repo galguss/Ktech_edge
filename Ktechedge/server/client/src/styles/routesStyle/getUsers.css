@@ -6,6 +6,7 @@
 
 .rdt_Table{
     background-color: aqua;
+    direction: ltr;
 }
 
 .rdt_TableRow{
@@ -15,4 +16,13 @@
 .rdt_TableCol{
     background-color: aquamarine;
     
+}
+
+#userTable #submit{
+    width: 24%;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 16px;
+    background-color: coral;
+    color: white;
 }

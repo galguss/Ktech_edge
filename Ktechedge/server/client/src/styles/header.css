@@ -6,5 +6,17 @@ header{
     color: white;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+}
+
+header > h1{
+    width: 30%;
+    margin: auto;
+}
+
+header > a{
+    text-decoration: none;
+    font-size: 24px;
+    color: white;
+    margin-right: 110px;
 }

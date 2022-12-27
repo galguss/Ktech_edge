@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
 import '../../styles/routesStyle/getUsers.css';
 
-function GetUsers(){
+
+
+function GetUsers({ isLogged }){
     const [users, setUsers] = useState([{}]);
 
     const colums = [
@@ -36,29 +38,41 @@ function GetUsers(){
         }
     ];
     
-    useEffect(() => fetchUsersData, []);
-
-    async function fetchUsersData(){
-        const URL = 'http://localhost:3050/admin';
-        const response = await fetch(URL);
-
-        const users = await response.json();
-        setUsers(users);
-    }
-
-    
    
 
-    return(
+    async function fetchUsersData(){
+        try {
+            const URL = '/admin';
+            const response = await fetch(URL);
+            const users = await response.json();
+            setUsers(users);
+        } catch (error) {
+            console.log(error);
+        }
+        
+        
+    }
+
+        if(!isLogged){
+            
+            return (
+                <>
+                    <p>Must be logged in to the system</p>
+                </>
+            )
+        }else {
+            return(
        
-            <div id='userTable'>
-            <DataTable 
-            title ='Users'
-            columns={colums}
-            data ={users}
-            />
-            </div>       
-    )
+                <div id='userTable'>
+                <DataTable 
+                title ='Users'
+                columns={colums}
+                data ={users}
+                />
+                <button id='submit' onClick={e => {e.preventDefault(); fetchUsersData()}}>Get Users</button>
+                </div>       
+        )
+    }  
 }
 
 export default GetUsers;
