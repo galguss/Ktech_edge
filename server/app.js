@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const morgan = require('morgan');
 const app = express();
 
@@ -32,12 +33,13 @@ app.listen(port, (req, res) => {
 
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(express.static('public'));
+const publicPath = path.join(__dirname, "/public");
+app.use(express.static(publicPath));
+const buildPath = path.join(__dirname, "../client/build");
+app.use(express.static(buildPath));
 
 app.get('/' , (req, res) => {
-    res.json({
-        message: 'hello word'
-    })
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
 
 app.post('/login', async (req, res) => {
@@ -51,7 +53,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.use('/admin' ,admin);
+app.use('/admin', checkAdmin ,admin);
 
 app.use('/subject', subjects);
 
