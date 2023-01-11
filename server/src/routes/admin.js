@@ -34,6 +34,10 @@ router.post('/', async (req,res) => {
 router.patch('/', async (req, res) => {
     try {
         const { column, oldValue, newValue } = req.body;
+        if(column === "password"){
+            const newPassword = await bcryptHash(newValue, 10);
+            await User.updateUser(column, oldValue, newPassword);
+        }
         await User.updateUser(column, oldValue, newValue);
         res.status(201).json({ message: 'user updated'});
     } catch (error) {
